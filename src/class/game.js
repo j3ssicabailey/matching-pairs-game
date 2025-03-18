@@ -15,6 +15,37 @@ class Game {
         this.element = document.getElementById(idElement);
         this.generateCards();
         this.paintCards();
+        this.element.addEventListener("click", () => {
+            this.checkOpenCards();
+        })
+    }
+
+    get rows() {
+        return this.#rows;
+    }
+
+    get cols() {
+        return this.#cols;
+    }
+
+    checkOpenCards() {
+        let openCards = this.#cards.filter((card) => card.open && card.found === false);
+        if (openCards.length === 2) {
+            if (openCards[0].color === openCards[1].color) {
+                openCards.map((card) => {
+                    card.found = true;
+                })
+            } else {
+                setTimeout(() => {
+                    openCards.map((card) => {
+                        card.resetColor();
+                    })
+                }, 750);
+            }
+        }
+        if (this.#cards.every(card => card.found)) {
+            alert("All matching pairs were found!");
+        }          
     }
 
     generateColors() {
@@ -50,21 +81,31 @@ class Game {
             newCard.classList.add("matchingCards");
             newCard.dataset.row = card.row;
             newCard.dataset.col = card.col;
+
+            card.element = newCard;
+            card.addEventClick();
             this.element.appendChild(newCard);
         }) 
-    }
-
-    get rows() {
-        return this.#rows;
-    }
-
-    get cols() {
-        return this.#cols;
     }
 
     setGridTemplate() {
         this.element.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
         this.element.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
+    }
+
+    
+    static establishGridSize() {
+        let rowsUser = parseInt(prompt("Enter the number of rows: "));
+        let colsUser = parseInt(prompt("Enter the number of columns: "))
+        while (rowsUser * colsUser % 2 !== 0) {
+            alert("To play the game, you need an even number of cards. Please re-enter rows/columns");
+            rowsUser = parseInt(prompt("Enter the number of rows: "));
+            colsUser = parseInt(prompt("Enter the number of columns: "))
+        }
+        return {
+            rows: rowsUser,
+            cols: colsUser,
+        }
     }
 }
 

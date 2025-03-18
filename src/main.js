@@ -3,8 +3,11 @@ import '../sass/main.scss'
 import Game from "./class/game"
 import Card from "./class/card"
 
-let rowsUser = parseInt(prompt("Enter the number of rows: "));
-let colsUser = parseInt(prompt("Enter the number of columns: "))
+let data = Game.establishGridSize();
 
-let game = new Game(rowsUser, colsUser, "game");
-let card = new Card();
+let game = new Game(data.rows, data.cols, "memoryGrid");
+
+let playAgainBtn = document.getElementById('playAgainBtn');
+playAgainBtn.addEventListener('click', () => {
+    location.reload();
+});
