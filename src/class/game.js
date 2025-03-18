@@ -6,11 +6,13 @@ class Game {
     #cols;
     #idElement;
     #cards
-    constructor(rows, cols, idElement = "game") {
+    element;
+    constructor(rows, cols, idElement = "memoryGrid") {
         this.#rows = rows;
         this.#cols = cols;
         this.#idElement = idElement;
         this.#cards = [];
+        this.element = document.getElementById(idElement);
         this.generateCards();
         this.paintCards();
     }
@@ -42,14 +44,27 @@ class Game {
     }
 
     paintCards() {
-        let memoryGrid = document.getElementById(this.#idElement);
+        this.setGridTemplate();
         this.#cards.map((card) => {
             let newCard = document.createElement("div");
             newCard.classList.add("matchingCards");
             newCard.dataset.row = card.row;
             newCard.dataset.col = card.col;
-            memoryGrid.appendChild(newCard);
+            this.element.appendChild(newCard);
         }) 
+    }
+
+    get rows() {
+        return this.#rows;
+    }
+
+    get cols() {
+        return this.#cols;
+    }
+
+    setGridTemplate() {
+        this.element.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
+        this.element.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
     }
 }
 
