@@ -95,17 +95,35 @@ class Game {
 
     
     static establishGridSize() {
-        let rowsUser = parseInt(prompt("Enter the number of rows: "));
-        let colsUser = parseInt(prompt("Enter the number of columns: "))
-        while (rowsUser * colsUser % 2 !== 0) {
-            alert("To play the game, you need an even number of cards. Please re-enter rows/columns");
+        let rowsUser, colsUser;
+        // check localStorage
+        if(localStorage.getItem("rows") != null && localStorage.getItem("cols") !== null) {
+            rowsUser = parseInt(localStorage.getItem("rows"));
+            colsUser = parseInt(localStorage.getItem("cols"));
+        } else {
             rowsUser = parseInt(prompt("Enter the number of rows: "));
             colsUser = parseInt(prompt("Enter the number of columns: "))
+            while (rowsUser * colsUser % 2 !== 0) {
+                alert("To play the game, you need an even number of cards. Please re-enter rows/columns");
+                rowsUser = parseInt(prompt("Enter the number of rows: "));
+                colsUser = parseInt(prompt("Enter the number of columns: "))
+            }
+            // localStorage to save player progress
+            localStorage.setItem("rows", rowsUser);
+            localStorage.setItem("cols", colsUser);
+
+            return {
+                rows: rowsUser,
+                cols: colsUser,
+            }
+
         }
-        return {
-            rows: rowsUser,
-            cols: colsUser,
-        }
+        
+    }
+    static resetGame() {
+        localStorage.removeItem("rows");
+        localStorage.removeItem("cols");
+        location.reload();
     }
 }
 
