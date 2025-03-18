@@ -1,0 +1,27 @@
+@media (max-width: 768px) {
+    html, body {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    .exercise {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .exercise p {
+        font-size: 1rem;
+    }
+}

@@ -1,5 +1,15 @@
-@import url(./components/game.scss);
+@import url(base/_reset.scss);
+@import url(base/_typography.scss);
+@import url(components/_buttons.scss);
+@import url(components/_game.scss);
+@import url(layout/_grid.scss);
+@import url(_media.scss);
 
-h1 {
-    color: rgb(228, 87, 221);
+body {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    &.styles-loaded {
+        opacity: 1;
+    }
 }
