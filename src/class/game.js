@@ -123,7 +123,7 @@ class Game {
     static resetGame() {
         localStorage.removeItem("rows");
         localStorage.removeItem("cols");
-        location.reload();
+        location.reload();   // check that js loading after scss
     }
 }
 

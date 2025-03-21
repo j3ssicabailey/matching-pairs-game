@@ -1,5 +1,9 @@
 import '../sass/main.scss'
 
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.add("styles-loaded");
+});
+
 import Game from "./class/game"
 import Card from "./class/card"
 
