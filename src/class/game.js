@@ -63,16 +63,40 @@ class Game {
     }
 
     generateCards() {
-        let randomColors = this.generateColors();
-        // Create cards and assign colors
-        for (let row = 0; row < this.#rows; row++) {
-            for (let col = 0; col < this.#cols; col++) {
-                let color = randomColors.shift();
-                let newCard = new Card(row, col, color);
+        this.#cards = [];
+        // Look in localStorage to create the same
+        if (localStorage.getItem("cards") !== null) {
+            let cardsFromLocalStorage = JSON.parse(localStorage.getItem("cards"));
+            cardsFromLocalStorage.map(card => {
+                let newCard = new Card(card.row, card.col, card.color);
                 this.#cards.push(newCard);
+            })
+        } else {
+            let randomColors = this.generateColors();
+            // Create cards and assign colors
+            for (let row = 0; row < this.#rows; row++) {
+                for (let col = 0; col < this.#cols; col++) {
+                    let color = randomColors.shift();
+                    let newCard = new Card(row, col, color);
+                    this.#cards.push(newCard);
+                }
             }
+            this.cardsToLocalStorage();
         }
     }
+    cardsToLocalStorage() {
+        let arrayUserToLocalStorage = this.#cards.map(card => {
+            return {
+                "row": card.row,
+                "col": card.col,
+                "color": card.color,
+                "open": card.open,
+                "found": card.found
+            }
+        });
+        localStorage.setItem("cards", JSON.stringify(arrayUserToLocalStorage));
+    }
+
 
     paintCards() {
         this.setGridTemplate();
@@ -103,6 +127,7 @@ class Game {
         } else {
             rowsUser = parseInt(prompt("Enter the number of rows: "));
             colsUser = parseInt(prompt("Enter the number of columns: "))
+        
             while (rowsUser * colsUser % 2 !== 0) {
                 alert("To play the game, you need an even number of cards. Please re-enter rows/columns");
                 rowsUser = parseInt(prompt("Enter the number of rows: "));
@@ -111,19 +136,14 @@ class Game {
             // localStorage to save player progress
             localStorage.setItem("rows", rowsUser);
             localStorage.setItem("cols", colsUser);
-
-            return {
-                rows: rowsUser,
-                cols: colsUser,
-            }
-
         }
-        
+        return { rows: rowsUser, cols: colsUser }; 
     }
     static resetGame() {
         localStorage.removeItem("rows");
         localStorage.removeItem("cols");
-        location.reload();   // check that js loading after scss
+        localStorage.removeItem("cards");
+        location.reload();  
     }
 }
 
