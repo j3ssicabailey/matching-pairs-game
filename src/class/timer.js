@@ -9,17 +9,18 @@ class Timer {
     idElement;
 
     constructor(idElement = "timer") {
+        console.log("Timer initalized");
         this.idElement = idElement;
         this.ms = 0;
-        this.sec = 10;
+        this.sec = 0;
         this.min = 0;
     }
 
     start() {
-        this.count = setInterval(function () {
-            if (this.ms == 100) {
+        this.count = setInterval(() => {  
+            if (this.ms === 100) {
                 this.ms = 0;
-                if (this.sec == 60) {
+                if (this.sec === 60) {
                     this.sec = 0;
                     this.min++;
                 } else {
@@ -28,13 +29,14 @@ class Timer {
             } else {
                 this.ms++;
             }
-                this.malt = this.pad(this.min);
-                this.salt = this.pad(this.sec);
-                this.msalt = this.pad(this.ms);
-
-                this.update(this.malt + ":" + this.salt + ":" + this.msalt);
+            this.malt = this.pad(this.min);
+            this.salt = this.pad(this.sec);
+            this.msalt = this.pad(this.ms);
+    
+            this.update(this.malt + ":" + this.salt + ":" + this.msalt);
         }, 10);
     }
+    
 
     stop() {
         clearInterval(this.count);
