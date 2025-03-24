@@ -1,5 +1,6 @@
 import { shuffleArray } from '../utils/utils';
 import Card from './card';
+import Timer from "./timer";
 
 class Game {
     #rows;
@@ -7,6 +8,7 @@ class Game {
     #idElement;
     #cards
     element;
+    timer;
     constructor(rows, cols, idElement = "memoryGrid") {
         this.#rows = rows;
         this.#cols = cols;
@@ -17,7 +19,9 @@ class Game {
         this.paintCards();
         this.element.addEventListener("click", () => {
             this.checkOpenCards();
-        })
+        });
+
+        this.startTimer();
     }
 
     get rows() {
@@ -35,13 +39,13 @@ class Game {
                 openCards.forEach((card) => {
                     card.found = true;
                 });
-                this.cardsToLocalStorage();  // Save progress when a pair is found
+                this.cardsToLocalStorage();  
             } else {
                 setTimeout(() => {
                     openCards.forEach((card) => {
                         card.resetColor();
                     });
-                    this.cardsToLocalStorage();  // Save progress even when resetting
+                    this.cardsToLocalStorage(); 
                 }, 750);
             }
         }
@@ -103,30 +107,52 @@ class Game {
 
 
     paintCards() {
+        let header = document.createElement("header");
+        header.setAttribute("id", "cardHeader");
+        this.element.appendChild(header);
+    
+        let cardContainer = document.createElement("div");
+        cardContainer.setAttribute("id", "cardContainer");
+        this.element.appendChild(cardContainer);
+        this.element.appendChild(document.createElement("header"));
+    
         this.setGridTemplate();
+    
         this.#cards.forEach((card) => {
             let newCard = document.createElement("div");
             newCard.classList.add("matchingCards");
             newCard.dataset.row = card.row;
             newCard.dataset.col = card.col;
             
-            // If the card is found (or open), apply its color immediately
             if (card.found || card.open) {
                 newCard.style.backgroundColor = card.color;
             }
     
             card.element = newCard;
             card.addEventClick();
-            this.element.appendChild(newCard);
+            cardContainer.appendChild(newCard);
         });
     }
     
-
     setGridTemplate() {
-        this.element.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
-        this.element.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
+        
+        const cardContainer = document.getElementById("cardContainer");
+        cardContainer.style.display = "grid";
+        cardContainer.style.gridTemplateColumns = `repeat(${this.#cols}, 1fr)`; 
+        cardContainer.style.gridTemplateRows = `repeat(${this.#rows}, 1fr)`;  
+        cardContainer.style.gap = "5px";  
     }
+    
+    startTimer() {
+        let timerContainer = document.createElement("h3");
+        timerContainer.setAttribute("id", "timerContainer");
+        timerContainer.innerHTML = `<span id="timer">00:00:00</span>`;
 
+        let header = document.getElementById("cardHeader");
+        header.appendChild(timerContainer);
+        this.timer = new Timer();
+        this.timer.start(); 
+    }
     
     static establishGridSize() {
         let rowsUser, colsUser;
