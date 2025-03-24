@@ -6,12 +6,12 @@ class Card {
     #found;
     #element;
 
-    constructor(row, col, color) {
+    constructor(row, col, color, open = false, found = false) {
         this.#row = row;
         this.#col = col;
         this.#color = color;
-        this.#open = false;
-        this.#found = false;
+        this.#open = open;
+        this.#found = found;
     }
 
     get row() {

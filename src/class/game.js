@@ -29,24 +29,27 @@ class Game {
     }
 
     checkOpenCards() {
-        let openCards = this.#cards.filter((card) => card.open && card.found === false);
+        let openCards = this.#cards.filter((card) => card.open && !card.found);
         if (openCards.length === 2) {
             if (openCards[0].color === openCards[1].color) {
-                openCards.map((card) => {
+                openCards.forEach((card) => {
                     card.found = true;
-                })
+                });
+                this.cardsToLocalStorage();  // Save progress when a pair is found
             } else {
                 setTimeout(() => {
-                    openCards.map((card) => {
+                    openCards.forEach((card) => {
                         card.resetColor();
-                    })
+                    });
+                    this.cardsToLocalStorage();  // Save progress even when resetting
                 }, 750);
             }
         }
         if (this.#cards.every(card => card.found)) {
             alert("All matching pairs were found!");
-        }          
+        }
     }
+    
 
     generateColors() {
         // Create colors array
@@ -68,7 +71,7 @@ class Game {
         if (localStorage.getItem("cards") !== null) {
             let cardsFromLocalStorage = JSON.parse(localStorage.getItem("cards"));
             cardsFromLocalStorage.map(card => {
-                let newCard = new Card(card.row, card.col, card.color);
+                let newCard = new Card(card.row, card.col, card.color, card.open, card.found);
                 this.#cards.push(newCard);
             })
         } else {
@@ -84,6 +87,7 @@ class Game {
             this.cardsToLocalStorage();
         }
     }
+
     cardsToLocalStorage() {
         let arrayUserToLocalStorage = this.#cards.map(card => {
             return {
@@ -100,17 +104,23 @@ class Game {
 
     paintCards() {
         this.setGridTemplate();
-        this.#cards.map((card) => {
+        this.#cards.forEach((card) => {
             let newCard = document.createElement("div");
             newCard.classList.add("matchingCards");
             newCard.dataset.row = card.row;
             newCard.dataset.col = card.col;
-
+            
+            // If the card is found (or open), apply its color immediately
+            if (card.found || card.open) {
+                newCard.style.backgroundColor = card.color;
+            }
+    
             card.element = newCard;
             card.addEventClick();
             this.element.appendChild(newCard);
-        }) 
+        });
     }
+    
 
     setGridTemplate() {
         this.element.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
