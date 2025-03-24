@@ -1,6 +1,5 @@
 import '../sass/main.scss'
-import Game from "./class/game"
-import Card from "./class/card"
+import Game from "./class/game";
 
 
 document.addEventListener("DOMContentLoaded", () => {

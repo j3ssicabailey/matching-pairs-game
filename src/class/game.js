@@ -46,11 +46,18 @@ class Game {
                         card.resetColor();
                     });
                     this.cardsToLocalStorage(); 
-                }, 750);
-            }
+                }, 500);
+            } this.checkGameOver();
         }
+        
+    }
+
+    checkGameOver() {
         if (this.#cards.every(card => card.found)) {
-            alert("All matching pairs were found!");
+            setTimeout(() => {
+                this.timer.stop();
+                alert("All matching pairs were found!")
+            }, 250); 
         }
     }
     
@@ -114,7 +121,7 @@ class Game {
         let cardContainer = document.createElement("div");
         cardContainer.setAttribute("id", "cardContainer");
         this.element.appendChild(cardContainer);
-        this.element.appendChild(document.createElement("header"));
+
     
         this.setGridTemplate();
     
@@ -147,9 +154,6 @@ class Game {
         let timerContainer = document.createElement("h3");
         timerContainer.setAttribute("id", "timerContainer");
         timerContainer.innerHTML = `<span id="timer">00:00:00</span>`;
-
-        let header = document.getElementById("cardHeader");
-        header.appendChild(timerContainer);
         this.timer = new Timer();
         this.timer.start(); 
     }
@@ -179,6 +183,7 @@ class Game {
         localStorage.removeItem("rows");
         localStorage.removeItem("cols");
         localStorage.removeItem("cards");
+        localStorage.removeItem("timer");
         location.reload();  
     }
 }

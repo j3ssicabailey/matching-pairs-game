@@ -11,9 +11,18 @@ class Timer {
     constructor(idElement = "timer") {
         console.log("Timer initalized");
         this.idElement = idElement;
-        this.ms = 0;
-        this.sec = 0;
-        this.min = 0;
+
+        if(localStorage.getItem("timer") !== null) {
+            let timerFromLocalStorage = JSON.parse(localStorage.getItem("timer"));
+            this.min = parseInt(timerFromLocalStorage.min);
+            this.sec = parseInt(timerFromLocalStorage.sec);
+            this.ms = parseInt(timerFromLocalStorage.ms);
+        } else {        
+            this.ms = 0;
+            this.sec = 0;
+            this.min = 0;
+        }
+
     }
 
     start() {
@@ -24,6 +33,14 @@ class Timer {
                     this.sec = 0;
                     this.min++;
                 } else {
+                    let timerObject = {
+                        "min": this.min,
+                        "sec": this.sec,
+                        "ms": this.ms
+                    };
+            
+                    localStorage.setItem("timer", JSON.stringify(timerObject));
+                    
                     this.sec++;
                 }
             } else {

@@ -4,8 +4,7 @@ A memory-based game where players match pairs of colored cards. This project is 
 
 ## 🚀 Features  
 - A **6x5 grid** of hidden colored cards.  
-- Click to reveal a card's color.  
-- Drag to place it where you think its pair is.  
+- Click to reveal a card's color.    
 - Matched pairs stay visible; incorrect matches reset.  
 - Tracks completion and time taken.  
 
@@ -26,14 +25,14 @@ A memory-based game where players match pairs of colored cards. This project is 
     - npm run dev
 
 ## 📌 Status
-This is a JavaScript project currently being refactored to improve structure and performance.
+This is a JavaScript project being refactored to improve structure and performance.
 
 ## 🎯 Future Enhancements
 - Add animations for smoother transitions.
 - Improve accessibility and responsiveness.
 - Implement a scoring system.
 
-## 📜 License
-This project is open-source. Feel free to contribute!
+## 🤝 Contributing  
+Contributions are welcome! Feel free to fork the repo and submit a pull request.  
 
 👩‍💻 Developed by Jess, a Web Development student.
